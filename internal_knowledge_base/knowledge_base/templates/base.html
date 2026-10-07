@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Knowledge Base</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        body { padding-top: 2rem; }
+        .category-badge { background-color: #3949ab; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>🏢 Team Portal: Knowledge Base</strong></li>
+            </ul>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="container">
+        {% block content %} {% endblock %}
+    </main>
+
+    <footer class="container">
+        <small>© 2026 Internal Company Directory</small>
+    </footer>
+</body>
+</html>

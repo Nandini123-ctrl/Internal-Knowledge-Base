@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Shift Scheduler & Leave Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        .form-container {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .form-container input {
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            flex: 1;
+            min-width: 150px;
+        }
+        .form-container button {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .action-btn {
+            padding: 5px 10px;
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .action-btn:hover {
+            background-color: #d68910;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📅 Employee Shift Scheduler & Leave Tracker</h2>
+
+    <!-- Add/Edit Form -->
+    <div class="form-container">
+        <input type="text" id="employeeName" placeholder="Employee Name">
+        <input type="date" id="shiftDate">
+        <input type="text" id="shiftDetails" placeholder="Shift Details (e.g., Morning 08:00 - 16:00)">
+        <button id="saveBtn" onclick="handleSave()">Add Shift</button>
+    </div>
+
+    <!-- Shift Schedule Table -->
+    <h2>Shift Schedule</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Shift Date</th>
+                <th>Shift Details</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="shiftTableBody">
+            <!-- Data populated dynamically -->
+        </tbody>
+    </table>
+
+    <!-- Leave Requests Table -->
+    <h2>Leave Requests</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Leave Date</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody id="leaveTableBody">
+            <tr>
+                <td>Fiona Gallagher</td>
+                <td>2026-07-22</td>
+                <td>Sick Leave</td>
+            </tr>
+            <tr>
+                <td>George Clark</td>
+                <td>2026-07-24</td>
+                <td>Casual Leave</td>
+            </tr>
+            <tr>
+                <td>Hannah Abbott</td>
+                <td>2026-07-25</td>
+                <td>Medical Emergency</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Initial Data Array based on your dashboard
+    let shifts = [
+        { employeeName: "Alice Smith", shiftDate: "2026-07-22", shiftDetails: "Morning (08:00 - 16:00)" },
+        { employeeName: "Bob Jones", shiftDate: "2026-07-22", shiftDetails: "Evening (16:00 - 00:00)" },
+        { employeeName: "Charlie Brown", shiftDate: "2026-07-23", shiftDetails: "Night (00:00 - 08:00)" },
+        { employeeName: "Diana Prince", shiftDate: "2026-07-23", shiftDetails: "Morning (08:00 - 16:00)" },
+        { employeeName: "Evan Wright", shiftDate: "2026-07-24", shiftDetails: "Evening (16:00 - 00:00)" }
+    ];
+
+    let editingIndex = -1; // Tracks if we are currently editing a row (-1 means adding new)
+
+    function renderShifts() {
+        const tbody = document.getElementById('shiftTableBody');
+        tbody.innerHTML = '';
+
+        shifts.forEach((shift, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${shift.employeeName}</td>
+                <td>${shift.shiftDate}</td>
+                <td>${shift.shiftDetails}</td>
+                <td><button class="action-btn" onclick="editShift(${index})">Edit</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function handleSave() {
+        const name = document.getElementById('employeeName').value;
+        const date = document.getElementById('shiftDate').value;
+        const details = document.getElementById('shiftDetails').value;
+
+        if (!name || !date || !details) {
+            alert('Please fill out all fields before saving.');
+            return;
+        }
+
+        if (editingIndex > -1) {
+            // Update existing entry
+            shifts[editingIndex] = { employeeName: name, shiftDate: date, shiftDetails: details };
+            editingIndex = -1;
+            document.getElementById('saveBtn').innerText = 'Add Shift';
+        } else {
+            // Add new entry
+            shifts.push({ employeeName: name, shiftDate: date, shiftDetails: details });
+        }
+
+        // Clear input form and refresh table view
+        document.getElementById('employeeName').value = '';
+        document.getElementById('shiftDate').value = '';
+        document.getElementById('shiftDetails').value = '';
+        renderShifts();
+    }
+
+    function editShift(index) {
+        const shift = shifts[index];
+        
+        // Populate inputs with selected row data
+        document.getElementById('employeeName').value = shift.employeeName;
+        document.getElementById('shiftDate').value = shift.shiftDate;
+        document.getElementById('shiftDetails').value = shift.shiftDetails;
+
+        editingIndex = index;
+        document.getElementById('saveBtn').innerText = 'Update Shift';
+    }
+
+    // Initial render call when page loads
+    window.onload = renderShifts;
+</script>
+
+</body>
+</html>

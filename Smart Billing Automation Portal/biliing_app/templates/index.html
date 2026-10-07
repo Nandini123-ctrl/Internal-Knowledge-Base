@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Billing Automation Portal</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background-color: var(--bg); color: var(--text-dark); line-height: 1.6; }
+
+    /* Navigation Bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 8%;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
+    .nav-buttons { display: flex; gap: 10px; }
+
+    /* Buttons */
+    .btn-dark {
+      background: #0f172a;
+      color: #fff;
+      padding: 8px 18px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-dark:hover { background: #1e293b; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    /* Section Headers */
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 50px 0 30px;
+    }
+
+    /* Cards Grid (Why Choose Us) */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      padding: 30px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .icon-circle {
+      width: 50px;
+      height: 50px;
+      background: #eff6ff;
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 1.2rem;
+    }
+    .feature-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* How It Works Section */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+    .step-card {
+      text-align: center;
+    }
+    .step-number {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+    .step-card h4 { font-size: 0.95rem; margin-bottom: 6px; }
+    .step-card p { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* Interactive Billing Modal Section */
+    #billingApp {
+      display: none;
+      max-width: 1000px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    .form-row { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+    .form-group { flex: 1; min-width: 120px; }
+    .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    th { background: #f1f5f9; }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--card-bg);
+      margin-top: 40px;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printableReceipt, #printableReceipt * { visibility: visible; }
+      #printableReceipt { position: absolute; left: 0; top: 0; width: 100%; font-family: monospace; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <div class="logo">Smart Billing Portal</div>
+    <div class="nav-buttons">
+      <button class="btn-dark" onclick="openBillingApp()">Create Invoice</button>
+      <button class="btn-dark" onclick="openBillingApp()">Dashboard</button>
+      <button class="btn-dark">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <h1>Smart Billing Automation Portal</h1>
+    <p>Create professional, GST-compliant invoices in seconds with automated SQL tracking and instant print capabilities.</p>
+    <button class="btn-primary" onclick="openBillingApp()">Get Started</button>
+  </section>
+
+  <!-- Features Grid -->
+  <section>
+    <h2 class="section-title">Why Choose Our Billing Portal?</h2>
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="icon-circle">⚡</div>
+        <h3>Automated Calculation</h3>
+        <p>Our engine automatically calculates subtotal, GST rates, discounts, and grand totals flawlessly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-circle">📋</div>
+        <h3>GST & Tax Ready</h3>
+        <p>Pre-configured tax slabs with customizable business details and GSTIN integration.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-circle">💾</div>
+        <h3>SQLite Database Integration</h3>
+        <p>Every single transaction is safely archived into your local database for easy accounting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps Section -->
+  <section>
+    <h2 class="section-title">How It Works</h2>
+    <div class="grid-4">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h4>Enter Customer Details</h4>
+        <p>Fill in customer name, contact details, and payment method.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h4>Add Line Items</h4>
+        <p>Add products, rates, quantities, and GST percentages.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h4>Apply Discounts</h4>
+        <p>Adjust optional discounts and view live price updates.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h4>Save & Print Invoice</h4>
+        <p>Store in SQL database and export a clean print receipt.</p>
+      </div>
+    </div>
+    <div style="text-align: center; margin-bottom: 40px;">
+      <button class="btn-dark" onclick="openBillingApp()" style="padding: 10px 24px;">Create Your Invoice Now</button>
+    </div>
+  </section>
+
+  <!-- Embedded Billing Portal Workspace -->
+  <div id="billingApp">
+    <h2 style="margin-bottom:15px; font-size:1.3rem;">Invoice Generator</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" id="custName" placeholder="John Doe" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" id="phoneNum" placeholder="+91 9876543210" />
+      </div>
+      <div class="form-group">
+        <label>Payment Mode</label>
+        <select id="payMode">
+          <option>Cash</option>
+          <option>UPI / QR</option>
+          <option>Card</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Invoice No.</label>
+        <input type="text" id="invNo" readonly style="background:#f1f5f9;" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group" style="flex:2;">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="Product Description" />
+      </div>
+      <div class="form-group">
+        <label>Rate (₹)</label>
+        <input type="number" id="rate" value="0.00" />
+      </div>
+      <div class="form-group">
+        <label>Qty</label>
+        <input type="number" id="qty" value="1" />
+      </div>
+      <div class="form-group">
+        <label>GST %</label>
+        <select id="taxRate">
+          <option value="0">0%</option>
+          <option value="5">5%</option>
+          <option value="18" selected>18%</option>
+        </select>
+      </div>
+      <div style="display:flex; align-items:flex-end;">
+        <button class="btn-primary" style="padding:8px 16px; font-size:0.85rem;" onclick="addItem()">Add Item</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Rate</th><th>Qty</th><th>GST</th><th>Total</th></tr>
+      </thead>
+      <tbody id="cartTable"></tbody>
+    </table>
+
+    <div style="margin-top:20px; text-align:right;">
+      <p>Subtotal: <strong id="subTotal">₹0.00</strong></p>
+      <p>GST Total: <strong id="gstTotal">₹0.00</strong></p>
+      <p>Grand Total: <strong id="grandTotal" style="font-size:1.2rem; color:var(--primary);">₹0.00</strong></p>
+      <br>
+      <button class="btn-primary" onclick="saveAndPrint()">Save & Print Invoice</button>
+    </div>
+  </div>
+
+  <div id="printableReceipt"></div>
+
+  <footer>
+    &copy; 2026 Smart Billing Automation Portal. All rights reserved.
+  </footer>
+
+  <script>
+    let cart = [];
+    document.getElementById('invNo').value = 'INV-' + Math.floor(100000 + Math.random() * 900000);
+
+    function openBillingApp() {
+      const app = document.getElementById('billingApp');
+      app.style.display = 'block';
+      app.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function addItem() {
+      const name = document.getElementById('itemName').value;
+      const rate = parseFloat(document.getElementById('rate').value) || 0;
+      const qty = parseInt(document.getElementById('qty').value) || 1;
+      const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+
+      if (!name || rate <= 0) { alert('Please enter valid item details.'); return; }
+
+      const itemSubtotal = rate * qty;
+      const taxAmount = (itemSubtotal * taxRate) / 100;
+      const total = itemSubtotal + taxAmount;
+
+      cart.push({ name, rate, qty, taxRate, taxAmount, total });
+      renderCart();
+    }
+
+    function renderCart() {
+      const tbody = document.getElementById('cartTable');
+      tbody.innerHTML = '';
+      let sub = 0, tax = 0;
+
+      cart.forEach(i => {
+        sub += i.rate * i.qty;
+        tax += i.taxAmount;
+        tbody.innerHTML += `<tr><td>${i.name}</td><td>₹${i.rate}</td><td>${i.qty}</td><td>${i.taxRate}%</td><td>₹${i.total.toFixed(2)}</td></tr>`;
+      });
+
+      document.getElementById('subTotal').textContent = '₹' + sub.toFixed(2);
+      document.getElementById('gstTotal').textContent = '₹' + tax.toFixed(2);
+      document.getElementById('grandTotal').textContent = '₹' + (sub + tax).toFixed(2);
+    }
+
+    async function saveAndPrint() {
+      const custName = document.getElementById('custName').value;
+      if (!custName || cart.length === 0) { alert('Please fill in customer details and add items.'); return; }
+
+      const payload = {
+        invNo: document.getElementById('invNo').value,
+        custName: custName,
+        phoneNum: document.getElementById('phoneNum').value,
+        payMode: document.getElementById('payMode').value,
+        subTotal: parseFloat(document.getElementById('subTotal').textContent.replace('₹','')),
+        gstAmount: parseFloat(document.getElementById('gstTotal').textContent.replace('₹','')),
+        discount: 0,
+        grandTotal: parseFloat(document.getElementById('grandTotal').textContent.replace('₹','')),
+        cart: cart
+      };
+
+      const res = await fetch('/api/save-invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const resData = await res.json();
+      if (resData.status === 'success') {
+        window.print();
+      } else {
+        alert('Database error: ' + resData.message);
+      }
+    }
+  </script>
+</body>
+</html>

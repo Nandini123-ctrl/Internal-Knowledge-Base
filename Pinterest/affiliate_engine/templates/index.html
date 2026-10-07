@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Affiliate Content Engine for Pinterest & YouTube</title>
+  <style>
+    :root {
+      --primary: #e60023; /* Pinterest Red */
+      --primary-dark: #ad001a;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); line-height: 1.5; }
+
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 8%; background: var(--card-bg); border-bottom: 1px solid var(--border); }
+    .logo { font-weight: 800; font-size: 1.2rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .nav-btn { background: #0f172a; color: #fff; padding: 8px 16px; border: none; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+
+    .hero { text-align: center; padding: 50px 20px 30px; max-width: 850px; margin: 0 auto; }
+    .hero h1 { font-size: 2.5rem; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+    .hero p { font-size: 1.05rem; color: var(--muted); }
+
+    .container { max-width: 1150px; margin: 0 auto 50px; padding: 0 20px; display: flex; gap: 25px; flex-wrap: wrap; }
+    .panel { flex: 1; min-width: 320px; background: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; outline: none; }
+    .form-group textarea { resize: vertical; height: 75px; }
+
+    .btn-gen { background: var(--primary); color: #fff; width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+    .btn-gen:hover { background: var(--primary-dark); }
+    .btn-save { background: var(--accent); color: #fff; width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+
+    .output-card { background: #f1f5f9; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--primary); }
+    .output-card h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .copy-tag { font-size: 0.75rem; color: var(--accent); cursor: pointer; font-weight: 600; }
+
+    footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border); background: var(--card-bg); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">📌 Affiliate Creator Hub</div>
+    <button class="nav-btn" onclick="scrollToGen()">New Campaign</button>
+  </nav>
+
+  <section class="hero">
+    <h1>Amazon Affiliate & Social Content Engine</h1>
+    <p>Convert Amazon product links into Pinterest Pins, Linktree links, and YouTube Shorts scripts in one click.</p>
+  </section>
+
+  <div class="container" id="appWorkspace">
+    <!-- Left Input Panel -->
+    <div class="panel">
+      <h2 style="font-size: 1.2rem; margin-bottom: 15px;">1. Product & Tag Setup</h2>
+      <div class="form-group">
+        <label>Amazon Product Name</label>
+        <input type="text" id="productName" placeholder="e.g. Ergonomic Desk Chair" />
+      </div>
+      <div class="form-group">
+        <label>Amazon Product URL</label>
+        <input type="text" id="amazonUrl" placeholder="https://www.amazon.com/dp/B08X..." />
+      </div>
+      <div class="form-group">
+        <label>Amazon Associates Tracking ID</label>
+        <input type="text" id="affiliateTag" placeholder="yourstore-20" value="pinterestdeal-20" />
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="category">
+          <option>Home & Kitchen</option>
+          <option>Tech & Gadgets</option>
+          <option>Fashion & Beauty</option>
+          <option>Fitness & Gear</option>
+        </select>
+      </div>
+      <button class="btn-gen" onclick="generateCampaign()">🚀 Generate Content Package</button>
+    </div>
+
+    <!-- Right Generated Output Panel -->
+    <div class="panel">
+      <h2 style="font-size: 1.2rem; margin-bottom: 15px;">2. Generated Campaign Package</h2>
+      
+      <div class="output-card">
+        <h3>🔗 Affiliate & Linktree URLs</h3>
+        <p><strong>Amazon Tagged Link:</strong> <span id="outAffLink" style="word-break: break-all; color: var(--accent);">Pending...</span></p>
+        <p style="margin-top: 5px;"><strong>Linktree Path:</strong> <span id="outLinktree">Pending...</span></p>
+      </div>
+
+      <div class="output-card" style="border-left-color: #e60023;">
+        <h3>📌 Pinterest Pin Copy</h3>
+        <div class="form-group">
+          <label>Pin Title</label>
+          <input type="text" id="outPinTitle" readonly />
+        </div>
+        <div class="form-group">
+          <label>Description & Hashtags</label>
+          <textarea id="outPinDesc" readonly></textarea>
+        </div>
+      </div>
+
+      <div class="output-card" style="border-left-color: #ff0000;">
+        <h3>🎬 YouTube Shorts Script</h3>
+        <div class="form-group">
+          <label>Shorts Title</label>
+          <input type="text" id="outYtTitle" readonly />
+        </div>
+        <div class="form-group">
+          <label>Video Script / Outline</label>
+          <textarea id="outYtScript" readonly style="height: 90px;"></textarea>
+        </div>
+      </div>
+
+      <button class="btn-save" onclick="saveToDatabase()">💾 Archive Campaign to SQL Database</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 Affiliate Creator Hub. Powered by Python & SQLite.
+  </footer>
+
+  <script>
+    let currentCampaign = null;
+
+    function scrollToGen() {
+      document.getElementById('appWorkspace').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function generateCampaign() {
+      const productName = document.getElementById('productName').value;
+      const amazonUrl = document.getElementById('amazonUrl').value;
+      const affiliateTag = document.getElementById('affiliateTag').value;
+      const category = document.getElementById('category').value;
+
+      if (!productName || !amazonUrl) {
+        alert('Please enter both Product Name and Amazon URL.');
+        return;
+      }
+
+      const res = await fetch('/api/generate-campaign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productName, amazonUrl, affiliateTag, category })
+      });
+
+      const data = await res.json();
+      if (data.status === 'success') {
+        currentCampaign = data.campaign;
+        currentCampaign.affiliateTag = affiliateTag;
+
+        document.getElementById('outAffLink').textContent = data.campaign.affiliateUrl;
+        document.getElementById('outLinktree').textContent = data.campaign.linktreeSlug;
+        document.getElementById('outPinTitle').value = data.campaign.pinTitle;
+        document.getElementById('outPinDesc').value = `${data.campaign.pinDescription}\n\n${data.campaign.pinHashtags}`;
+        document.getElementById('outYtTitle').value = data.campaign.ytTitle;
+        document.getElementById('outYtScript').value = data.campaign.ytScript;
+      }
+    }
+
+    async function saveToDatabase() {
+      if (!currentCampaign) {
+        alert('Please generate a campaign first!');
+        return;
+      }
+
+      const res = await fetch('/api/save-campaign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentCampaign)
+      });
+
+      const data = await res.json();
+      if (data.status === 'success') {
+        alert('Success! Campaign archived into local database.');
+      } else {
+        alert('Error: ' + data.message);
+      }
+    }
+  </script>
+</body>
+</html>

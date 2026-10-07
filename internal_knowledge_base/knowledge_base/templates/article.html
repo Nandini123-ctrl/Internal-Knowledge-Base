@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li>{{ article.category }}</li>
+    <li>{{ article.title }}</li>
+  </ul>
+</nav>
+
+<article>
+    <header>
+        <span class="category-badge">{{ article.category }}</span>
+        <h1 style="margin-top: 0.5rem;">{{ article.title }}</h1>
+        <small>Last updated: {{ article.updated_at }}</small>
+    </header>
+    
+    <p style="white-space: pre-line; font-size: 1.1rem; line-height: 1.6;">
+        {{ article.content }}
+    </p>
+    
+    <footer>
+        <a href="/" class="secondary">← Back to Directory</a>
+    </footer>
+</article>
+{% endblock %}

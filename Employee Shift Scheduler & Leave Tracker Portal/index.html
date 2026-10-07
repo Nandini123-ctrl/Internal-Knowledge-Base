@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Shift Scheduler & Leave Tracker</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 40px; 
+            background-color: #f4f6f9; 
+        }
+        h1 { color: #2c3e50; margin-bottom: 30px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 15px; 
+            background-color: #ffffff; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        th, td { 
+            border: 1px solid #e1e8ed; 
+            padding: 12px 15px; 
+            text-align: left; 
+        }
+        th { 
+            background-color: #007bff; 
+            color: #ffffff; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #f1f3f5; }
+    </style>
+</head>
+<body>
+    <h1>📅 Employee Shift Scheduler & Leave Tracker</h1>
+    
+    <h2>Shift Schedule</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Shift Date</th>
+                <th>Shift Details</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr><td>Alice Smith</td><td>2026-07-22</td><td>Morning (08:00 - 16:00)</td></tr>
+        <tr><td>Bob Jones</td><td>2026-07-22</td><td>Evening (16:00 - 00:00)</td></tr>
+        <tr><td>Charlie Brown</td><td>2026-07-23</td><td>Night (00:00 - 08:00)</td></tr>
+        <tr><td>Diana Prince</td><td>2026-07-23</td><td>Morning (08:00 - 16:00)</td></tr>
+        <tr><td>Evan Wright</td><td>2026-07-24</td><td>Evening (16:00 - 00:00)</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Leave Requests</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Leave Date</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr><td>Fiona Gallagher</td><td>2026-07-22</td><td>Sick Leave</td></tr>
+        <tr><td>George Clark</td><td>2026-07-24</td><td>Casual Leave</td></tr>
+        <tr><td>Hannah Abbott</td><td>2026-07-25</td><td>Medical Emergency</td></tr>
+        </tbody>
+    </table>
+</body>
+</html>
